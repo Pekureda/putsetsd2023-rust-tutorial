@@ -2,7 +2,7 @@
 
 use std::{thread, time, io::{Stdout,Write}};
 use terminal::{Terminal,Action, Event, KeyCode, Retrieved, Color};
-mod draw;
+use rand::Rng;
 
 pub fn blackjack(){
     let mut term = terminal::stdout();
@@ -11,7 +11,7 @@ pub fn blackjack(){
 
 
     term.act(Action::SetForegroundColor(terminal::Color::Cyan)).unwrap();
-    term.write("New game of blackjack starts".as_bytes()).unwrap();
+    term.write("New game of blackjack starts\n".as_bytes()).unwrap();
     term.act(Action::ResetColor).unwrap();
     //Delear draws 1 card and Player draws 2 cards
     term.act(Action::SetForegroundColor(terminal::Color::Red)).unwrap();
@@ -44,6 +44,9 @@ pub fn blackjack(){
     }
 }
 
+fn draw_card()-> u8{
+    rand::thread_rng().gen_range(1..=11)
+}
 
 fn player_decisions(term: &mut Terminal<Stdout>, player_cards: &mut Vec<u8>){
     term.act(Action::SetForegroundColor(terminal::Color::Cyan)).unwrap();
@@ -75,15 +78,15 @@ fn player_decisions(term: &mut Terminal<Stdout>, player_cards: &mut Vec<u8>){
         }
     }
 }
+
 fn draw_and_print(term: &mut Terminal<Stdout>, who:&str, cards: &mut Vec<u8>){
-    let card = draw::draw_card();
+    let card = draw_card();
     cards.push(card);
     term.write(format!("{} draws {} and has total of {}\n", who, card, cards.iter().sum::<u8>()).as_bytes()).unwrap();
     thread::sleep(time::Duration::from_millis(500));
 }
 
-//THIS CODE WAS TAKEN FROM https://github.com/slightknack/rusty-donut
-//IT WAS SLIGHTLY MODIFIED
+//THIS CODE WAS TAKEN FROM https://github.com/slightknack/rusty-donut AND MODIFIED
 fn surprise(term: &mut Terminal<Stdout>, scoreboard: &str) {
     let (mut a, mut b) = (1.0_f64, 1.0_f64);
     let now = time::Instant::now();
