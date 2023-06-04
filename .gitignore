@@ -12,3 +12,8 @@ Cargo.lock
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+.idea/
+task2-solved/**
+task2-solved/
+task2-solved/cargo.toml
+task2-solved/cargo.toml
